@@ -1,5 +1,7 @@
 <template>
-  <div> Your balance is ( {{ balance }} ) </div>
+  <div class="flex justify-end lg:container">
+    <div class="w-1/6 self-auto px-5 py-5 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg my-6"> {{ balance }} </div>
+  </div>
 </template>
 
 <script>
