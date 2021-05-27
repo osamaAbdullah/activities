@@ -9,7 +9,7 @@
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600">
           <router-link class="font-medium text-indigo-600 hover:text-indigo-500" to="/login">you already have an
-            account
+            account?
           </router-link>
         </p>
       </div>
