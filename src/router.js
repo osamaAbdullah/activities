@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import {auth} from "./firebase";
+import {auth, db} from "./firebase";
 import {store} from "./vuex";
 
 const routes = [
@@ -18,7 +18,7 @@ const routes = [
         path: '/users',
         name: 'Users',
         component: () => import('./views/Users.vue'),
-        meta: {auth: true},
+        meta: {auth: true, role: 'admin'},
     },
     {
         path: '/activities',
@@ -60,24 +60,28 @@ const router = createRouter({
     routes
 })
 
-auth.onAuthStateChanged( (user) => {
+auth.onAuthStateChanged((user) => {
     if (user === null) {
         store.commit('setUser', {authenticated: false})
-        // router.replace({name: 'Login'})
-    }
-    else {
-        store.commit('setUser', {
-            authenticated: true,
-            email: user.email,
-            uid: user.uid,
-            role: 'admin',
-        })
-        // await router.replace({name: 'Home'})
+        router.push({name: 'Login'})
+    } else {
+        db.doc('users/' + user.uid).get()
+            .then(user => user.data())
+            .then(USER => {
+                store.commit('setUser', {
+                    authenticated: true,
+                    email: user.email,
+                    uid: user.uid,
+                    role: USER.role,
+                    name: USER.name,
+                })
+                router.push({name: 'Home'})
+            })
     }
 })
 
 router.beforeEach((to, from, next) => {
-    console.log(to.fullPath)
+    console.log(to.fullPath, 'route changed')
     //only admin should see this page
     if (to.matched.some(record => record.meta.role === 'admin')) {
         store.getters.user.role === 'admin' ? next() : next({name: 'Unauthorized'})
@@ -88,7 +92,5 @@ router.beforeEach((to, from, next) => {
         next()
     }
 });
-
-
 
 export default router

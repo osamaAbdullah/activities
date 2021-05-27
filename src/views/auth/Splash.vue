@@ -8,22 +8,14 @@
 export default {
   watch:{
     user(user) {
-      this.redirect(user)
+      if (user.authenticated === true) {
+        this.$router.replace(this.$store.state.initRoute === '/checking' ? '/' : this.$store.state.initRoute)
+      }
     }
   },
   computed: {
     user() {
       return this.$store.state.user
-    }
-  },
-  methods: {
-    redirect(user) {
-       if (user.authenticated === true) {
-         this.$router.replace(this.$store.state.initRoute === '/checking' ? '/' : this.$store.state.initRoute)
-       }
-       else {
-         this.$router.replace({name: 'Login'})
-       }
     }
   }
 }

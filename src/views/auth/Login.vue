@@ -66,21 +66,7 @@ export default {
   }),
   methods: {
     signIn() {
-      auth.signInWithEmailAndPassword(this.form.fields.email, this.form.fields.password)
-          .then((userCredential) => {
-            this.$store.commit('setUser', {
-              email: userCredential.user.email,
-              uid: userCredential.user.uid,
-              authenticated: true,
-              role: 'admin',
-            })
-            this.$router.push({name: 'Home'})
-          })
-          .catch((error) => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            console.log(errorCode, errorMessage);
-          });
+      auth.signInWithEmailAndPassword(this.form.fields.email, this.form.fields.password);
     },
   },
   created() {

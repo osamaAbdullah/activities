@@ -93,14 +93,12 @@ export default {
   }),
   methods: {
     markAsPending(activityId, index) {
-      console.log('markAsPending');
       db.collection(this.ca)
           .doc(this.completedActivity())
           .delete()
       this.activities[index].completed = false;
     },
     markAsCompleted(activityId, index) {
-      console.log('markAsCompleted');
       db.collection(this.ca)
           .doc(this.completedActivity())
           .set({activityId: activityId, userId: this.$store.getters.user.uid, dateTime: new Date()})
@@ -112,7 +110,7 @@ export default {
   },
   computed: {
     status() {
-      return this.ratio * 100;
+      return this.ratio * 100 || 0;
     },
     ratio() {
       return this.activities.filter((activity) => activity.completed).length / this.activities.length

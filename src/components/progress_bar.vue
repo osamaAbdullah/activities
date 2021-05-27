@@ -10,6 +10,7 @@ export default {
   props: {
     percentage: {
       type: Number,
+      default: 0,
       required: true
     },
     color: {
