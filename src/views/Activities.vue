@@ -74,7 +74,7 @@ export default {
   }),
   methods: {
     joinActivity(activityId, index) {
-      db.collection("user_activity").doc(this.$store.getters.user.uid + '_' + activityId).set({
+      db.collection('user_activity').doc(this.$store.getters.user.uid + '_' + activityId).set({
         joinedAt: new Date(),
         userId: this.$store.getters.user.uid,
         activityId,

@@ -21,6 +21,9 @@
               <th scope="col" class="relative px-6 py-3">
                 <span class="sr-only">Transactions</span>
               </th>
+              <th scope="col" class="relative px-6 py-3">
+                <span class="sr-only">Activities</span>
+              </th>
             </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -38,15 +41,22 @@
                 <div class="text-sm text-gray-900">{{ user.email }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                  <select v-model="users[index].role" @change="changeRole(users[index].role, index)" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
-                  </select>
+                <select v-model="users[index].role" @change="changeRole(users[index].role, index)"
+                        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                  <option value="admin">Admin</option>
+                  <option value="user">User</option>
+                </select>
               </td>
               <td class="px-6 font-medium">
                 <button @click="seeTransactions(index)"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">see
                   transactions
+                </button>
+              </td>
+              <td class="px-6 font-medium">
+                <button @click="seeActivities(index)"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">see
+                  activities
                 </button>
               </td>
             </tr>
@@ -59,11 +69,14 @@
   </div>
 
   <!-- This example requires Tailwind CSS v2.0+ -->
-  <div v-if="transaction.visibility" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div v-if="transaction.visibility" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title"
+       role="dialog" aria-modal="true">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-      <div @click="transaction.visibility = false" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+      <div @click="transaction.visibility = false" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+           aria-hidden="true"></div>
       <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-      <div class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full">
+      <div
+          class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full">
         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
           <div class="sm:flex sm:items-start">
             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
@@ -71,7 +84,11 @@
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
                   {{ users[transaction.index].name }}'s Transactions
                 </h3>
-                <button @click="resetForm" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                  {{ balance }}$
+                </h3>
+                <button @click="resetForm"
+                        class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                   New Transaction
                 </button>
               </div>
@@ -84,19 +101,24 @@
                         <table class="min-w-full divide-y divide-gray-200">
                           <thead class="bg-gray-50">
                           <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                               User
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Amount
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Type
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Created At
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                               Updated At
                             </th>
                             <th scope="col" class="relative px-6 py-3">
@@ -137,12 +159,14 @@
                               <div class="text-sm text-gray-500">______</div>
                             </td>
                             <td class="px-6 font-medium">
-                              <button @click="editTransaction(transaction.id, index)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                              <button @click="editTransaction(transaction.id, index)"
+                                      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
                                 Edit
                               </button>
                             </td>
                             <td class="px-6 font-medium">
-                              <button @click="deleteTransaction(transaction.id, index)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
+                              <button @click="deleteTransaction(transaction.id, index)"
+                                      class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
                                 Delete
                               </button>
                             </td>
@@ -162,11 +186,101 @@
     </div>
   </div>
 
-  <div v-if="form.visibility" class="fixed z-20 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div v-if="activity.visibility" class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+       aria-modal="true">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-      <div @click="form.visibility = false" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+      <div @click="activity.visibility = false" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+           aria-hidden="true"></div>
       <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-      <div class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+      <div
+          class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-2/4">
+        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div class="sm:flex sm:items-start">
+            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <div class="flex justify-between">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                  {{ users[activity.index].name }}'s Activities
+                </h3>
+              </div>
+
+              <div class="mt-2">
+                <div class="flex flex-col w-full h-full">
+                  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-200">
+                          <thead class="bg-gray-50">
+                          <tr>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Title
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Description
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Joined At
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Mulct
+                            </th>
+                          </tr>
+                          </thead>
+                          <tbody class="bg-white divide-y divide-gray-200">
+                          <tr v-for="(activity, index) in activities" :key="activity.id">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="flex items-center">
+                                <div class="ml-4">
+                                  <div class="text-sm font-medium text-gray-900">
+                                    {{ activity.title }}
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="text-sm text-gray-900">{{ activity.description }}</div>
+                              <div class="text-sm text-gray-500">{{ activity.type }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                  {{ fromNow(activity.joinedAt) }}
+                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {{ activity.mulct }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <button @click="showMissedTimes(activity.id, activity.title)"
+                                      class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
+                                Missed times
+                              </button>
+                            </td>
+                          </tr>
+                          <!-- More people... -->
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div v-if="form.visibility" class="fixed z-20 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+       aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div @click="form.visibility = false" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+           aria-hidden="true"></div>
+      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      <div
+          class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
           <div class="sm:flex sm:items-start">
             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
@@ -179,18 +293,22 @@
                 <div class="mt-10 sm:mt-0">
                   <div class="md:grid md:grid-cols-3 md:gap-6">
                     <div class="mt-5 md:mt-0 md:col-span-2">
-                      <form @submit.prevent="form.mode === 'create' ? createTransactions(transaction.userId) : updateTransaction()">
+                      <form
+                          @submit.prevent="form.mode === 'create' ? createTransactions(transaction.userId) : updateTransaction()">
                         <div class="shadow overflow-hidden sm:rounded-md">
                           <div class="px-4 py-5 bg-white sm:p-6">
                             <div class="grid grid-cols-6 gap-6">
                               <div class="col-span-6 sm:col-span-3">
                                 <label for="amount" class="block text-sm font-medium text-gray-700">Amount</label>
-                                <input v-model="form.fields.amount" type="number" id="amount" required autocomplete="given-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                <input v-model="form.fields.amount" type="number" id="amount" required
+                                       autocomplete="given-name"
+                                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                               </div>
 
                               <div class="col-span-6 sm:col-span-3">
                                 <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
-                                <select id="type" v-model="form.fields.type" required autocomplete="country" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <select id="type" v-model="form.fields.type" required autocomplete="country"
+                                        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                   <option value="cashIn">Cash In</option>
                                   <option value="cashOut">Cash Out</option>
                                 </select>
@@ -199,7 +317,8 @@
                             </div>
                           </div>
                           <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <button type="submit"
+                                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                               Save
                             </button>
                           </div>
@@ -210,6 +329,35 @@
                 </div>
 
 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div v-if="missedActivity.visibility" class="fixed z-30 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+       aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div @click="missedActivity.visibility = false" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+           aria-hidden="true"></div>
+      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      <div
+          class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div class="sm:flex sm:items-start">
+            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                missed Days for "{{ missedActivity.activityTitle }}"
+              </h3>
+              <div class="mt-2">
+                <div class="mt-10 sm:mt-0">
+                  <div class="md:grid md:grid-cols-3 md:gap-6">
+                    <ul>
+                      <li v-for="day in missedActivities" :key="day" class="p-1 bg-gray-200 w-full">{{ day }}</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -233,10 +381,36 @@ export default {
       id: null,
       index: null
     },
+    activity: {
+      visibility: false,
+      userId: null,
+      id: null,
+      index: null
+    },
+    missedActivity: {
+      visibility: false,
+      activityTitle: null,
+    },
     transactions: [],
+    activities: [],
+    missedActivities: [],
     form: {},
   }),
   methods: {
+    showMissedTimes(activityId, activityTitle) {
+      this.missedActivities = []
+      db.collection('missed_activities')
+          .where('activityId', '==', activityId)
+          .where('userId', '==', this.activity.userId)
+          .orderBy('missedDay')
+          .get()
+          .then(missedActivitiesDoc => {
+            missedActivitiesDoc.forEach(missedActivity => {
+              this.missedActivities.push(missedActivity.data().missedDay)
+            })
+            this.missedActivity = {visibility: true, activityTitle}
+          })
+    },
     changeRole(role, index) {
       db.collection('users').doc(this.users[index].id).update({role}).then().catch()
     },
@@ -245,8 +419,24 @@ export default {
       db.collection('transactions').where('userId', '==', this.users[index].id).onSnapshot((querySnapshot) => {
         this.transactions = [];
         querySnapshot.forEach((doc) => {
-          console.log(doc.data())
           this.transactions.unshift({id: doc.id, ...doc.data(), user: this.users[index]});
+        });
+      });
+    },
+    seeActivities(index) {
+      this.activity = {visibility: true, userId: this.users[index].id, index}
+      db.collection('user_activity').where('userId', '==', this.users[index].id).onSnapshot((querySnapshot) => {
+        this.activities = [];
+        querySnapshot.forEach((doc) => {
+          db.doc('activities/' + doc.data().activityId)
+              .get()
+              .then(activity => this.activities.unshift({
+                    id: activity.id,
+                    ...activity.data(),
+                    joinedAt: doc.data().joinedAt,
+                    user: this.users[index]
+                  })
+              )
         });
       });
     },
@@ -298,6 +488,17 @@ export default {
         this.users.unshift({id: doc.id, ...doc.data()});
       });
     });
+  },
+  computed: {
+    balance() {
+      let balance = 0
+      this.transactions.map(transaction => {
+        transaction.type === 'cashIn' ?
+            balance += parseInt(transaction.amount) :
+            balance -= parseInt(transaction.amount)
+      })
+      return balance;
+    },
   },
 }
 </script>
