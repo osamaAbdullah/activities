@@ -16,6 +16,8 @@
       <form class="mt-8 space-y-6" @submit.prevent="signUp">
         <input type="hidden" name="remember" value="true"/>
         <div class="rounded-md shadow-sm -space-y-px">
+
+          <errors :errors="form.errors"/>
           <div>
             <label for="full-name" class="sr-only">Full name</label>
             <input id="full-name" v-model="form.fields.name" type="text" autocomplete="full-name" required=""
@@ -32,13 +34,16 @@
             <label for="password" class="sr-only">Password</label>
             <input id="password" v-model="form.fields.password" type="password" autocomplete="current-password"
                    required=""
+                   minlength="6"
                    class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                    placeholder="Password"/>
           </div>
           <div>
             <label for="password-confirmation" class="sr-only">Password confirmation</label>
             <input id="password-confirmation" v-model="form.fields.passwordConfirmation" type="password"
-                   autocomplete="current-password" required=""
+                   autocomplete="current-password"
+                   required=""
+                   minlength="6"
                    class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                    placeholder="Password confirmation"/>
           </div>
@@ -59,9 +64,13 @@
 <script>
 
 import {auth, db} from '../../firebase';
+import errors from '../../components/errors.vue'
 
 export default {
   name: 'Register',
+  components: {
+    errors
+  },
   data: () => ({
     form: {
       fields: {
@@ -69,15 +78,15 @@ export default {
         email: '',
         password: '',
         passwordConfirmation: '',
-      }
+      },
+      errors: []
     },
   }),
   methods: {
     signUp() {
-      if (this.form.fields.password !== this.form.fields.passwordConfirmation) {
-        alert('passwordConfirmation must be the same as password');
-        return;
-      }
+      if (this.form.fields.password !== this.form.fields.passwordConfirmation)
+        return this.form.errors.push('passwordConfirmation must be the same as password');
+
       auth.createUserWithEmailAndPassword(this.form.fields.email, this.form.fields.password)
           .then((userCredential) => {
             db.collection("users")
@@ -87,14 +96,10 @@ export default {
                   role: 'user',
                   lastCheck: new Date(),
                   email: this.form.fields.email,
-                })
-                .then()
-                .catch((error) => {
-                  console.error("Error adding document: ", error);
                 });
           })
           .catch((error) => {
-            console.log(error.code, error.message)
+            this.form.errors.push(error.message);
           });
     },
   },
