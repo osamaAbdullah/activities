@@ -193,9 +193,9 @@
            aria-hidden="true"></div>
       <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
       <div
-          class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-2/4">
+          class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-2/3">
         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <div class="sm:flex sm:items-start">
+          <div class="sm:flex sm:items-start justify-center">
             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
               <div class="flex justify-between">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -343,9 +343,9 @@
            aria-hidden="true"></div>
       <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
       <div
-          class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+          class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:2/3">
         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <div class="sm:flex sm:items-start">
+          <div class="sm:flex sm:items-center">
             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
               <h3 class="text-lg leading-6 font-medium text-gray-900">
                 missed Days for "{{ missedActivity.activityTitle }}"
