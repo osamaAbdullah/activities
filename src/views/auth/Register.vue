@@ -94,7 +94,6 @@ export default {
                 .set({
                   name: this.form.fields.name,
                   role: 'user',
-                  lastCheck: new Date(),
                   email: this.form.fields.email,
                 });
           })

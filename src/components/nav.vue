@@ -19,6 +19,7 @@
             <div class="flex space-x-4">
               <router-link to="/" :class="navLink('/')">Dashboard</router-link>
               <router-link to="/activities" :class="navLink('/activities')">Activities</router-link>
+<!--              <router-link to="/tasks/daily/my-missed-activities" :class="navLink('/tasks/daily/my-missed-activities')">My Daily missed activities</router-link>-->
               <router-link to="/users" :class="navLink('/users')">Users</router-link>
               <router-link to="/activities-manager" :class="navLink('/activities-manager')">Activity Manager</router-link>
               <router-link to="/tasks/daily/missed-activities" :class="navLink('/tasks/daily/missed-activities')">Daily missed activities</router-link>
@@ -63,6 +64,7 @@
       <div class="px-2 pt-2 pb-3 space-y-1 flex flex-col">
         <router-link to="/" :class="navLink('/')">Dashboard</router-link>
         <router-link to="/activities" :class="navLink('/activities')">Activities</router-link>
+<!--        <router-link to="/tasks/daily/my-missed-activities" :class="navLink('/tasks/daily/my-missed-activities')">My Daily missed activities</router-link>-->
         <router-link to="/users" :class="navLink('/users')">Users</router-link>
         <router-link to="/activities-manager" :class="navLink('/activities-manager')">Activity Manager</router-link>
         <router-link to="/tasks/daily/missed-activities" :class="navLink('/tasks/daily/missed-activities')">Daily missed activities</router-link>
