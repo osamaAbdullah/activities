@@ -56,7 +56,9 @@
               </td>
               <td class="px-6 font-medium">
                 <label class="inline-flex items-center justify-center text-2xl">
-                  <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600" @change="activity.completed ? markAsCompleted(activity.id, index) : markAsPending(activity.id, index)" v-model="activity.completed">
+                  <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
+                         @change="activity.completed ? markAsCompleted(activity.id, index) : markAsPending(activity.id, index)"
+                         v-model="activity.completed">
                   <span class="ml-2 text-gray-700">Completed</span>
                 </label>
               </td>
@@ -65,6 +67,22 @@
             <!-- More people... -->
             </tbody>
           </table>
+          <div id="cards" class="flex flex-col items-center">
+            <div v-for="(activity, index) in activities" :key="activity.id"
+                 @click="activity.completed ? markAsPending(activity.id, index) : markAsCompleted(activity.id, index)"
+                 :class="`rounded-3xl flex flex-col justify-center items-center p-5 my-3 ${activity.completed ? 'bg-green-200' : 'bg-red-200'}`">
+              <div v-text="activity.title" class="text-2xl text-white text-center p-1"></div>
+              <div v-text="activity.mulct" class="text-white text-center p-1"></div>
+              <div v-if="activity.completed" class="py-2 px-3">
+                <div class="p-2 w-full bg-green-300 text-sm text-center text-green-500 rounded-full">Completed</div>
+                <div class="italic p-2 text-blue-500">click to unComplete</div>
+              </div>
+              <div v-else class="py-2 px-3">
+                <div class="p-2 w-full bg-red-300 text-sm text-center text-red-500 rounded-full">Pending</div>
+                <div class="italic p-2 text-blue-500">click to Complete</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -93,14 +111,16 @@ export default {
   }),
   methods: {
     markAsPending(activityId, index) {
-      db.collection(this.ca)
-          .doc(this.completedActivity())
-          .delete()
-      this.activities[index].completed = false;
+      if (confirm('Are you sure you didn\'t completed the activity yet?')) {
+        db.collection(this.ca)
+            .doc(this.completedActivity(activityId))
+            .delete()
+        this.activities[index].completed = false;
+      }
     },
     markAsCompleted(activityId, index) {
       db.collection(this.ca)
-          .doc(this.completedActivity())
+          .doc(this.completedActivity(activityId))
           .set({activityId: activityId, userId: this.$store.getters.user.uid, dateTime: new Date()})
       this.activities[index].completed = true;
     },
@@ -124,7 +144,7 @@ export default {
             db.collection('activities').doc(doc.data().activityId)
                 .onSnapshot(async (activity) => {
                   let doneActivity = await db.collection(this.ca)
-                      .doc(this.completedActivity())
+                      .doc(this.completedActivity(activity.id))
                       .get()
                   this.activities.unshift({
                     id: activity.id,
@@ -139,3 +159,17 @@ export default {
   }
 }
 </script>
+<style scoped>
+
+@media screen and (max-width: 1024px) {
+  table {
+    display: none !important;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  #cards {
+    display: none !important;
+  }
+}
+</style>

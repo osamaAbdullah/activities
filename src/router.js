@@ -36,8 +36,14 @@ const routes = [
         path: '/tasks/daily/missed-activities',
         name: 'DailyMissedActivities',
         component: () => import('./views/tasks/DailyMissedActivities.vue'),
-        meta: {auth: true, role: 'admin'},
+        meta: {auth: true},
     },
+    // {
+    //     path: '/tasks/daily/my-missed-activities',
+    //     name: 'MyDailyMissedActivities',
+    //     component: () => import('./views/tasks/MyDailyMissedActivities.vue'),
+    //     meta: {auth: true},
+    // },
     {
         path: '/login',
         name: 'Login',

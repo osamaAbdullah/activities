@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center w-2/6 mx-auto shadow overflow-hidden border-b border-gray-200 sm:rounded-lg my-6">
-    <div class="text-2xl px-10 py-10">All activities</div>
+    <div class="text-2xl px-10 py-10">to be set</div>
   </div>
   <div class="flex flex-col container mx-auto">
     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -50,12 +50,8 @@
                 {{ activity.mulct }}
               </td>
               <td class="px-6 font-medium">
-                <button v-if="activity.joined" @click="leaveActivity(activity.id, index)"
-                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Leave
-                </button>
-                <button v-else @click="joinActivity(activity.id, index)"
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">Join
-                </button>
+                <button v-if="activity.joined" @click="leaveActivity(activity.id, index)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">Leave</button>
+                <button v-else @click="joinActivity(activity.id, index)" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">Join</button>
               </td>
             </tr>
             <!-- More people... -->
