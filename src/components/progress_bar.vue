@@ -1,6 +1,6 @@
 <template>
-    <div class="relative w-full bg-gray-200 rounded flex justify-center items-center">
-      <div class="text-2xl absolute"><slot></slot></div>
+    <div class="relative w-full bg-gray-200 rounded flex justify-start items-center">
+      <div class="text-2xl flex justify-center absolute inset-x-1/2"><slot></slot></div>
       <div :style="`width: ${percentage}%`" :class="`absolute top-0 h-16 rounded shim-${color}`"></div>
     </div>
 </template>

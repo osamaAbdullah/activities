@@ -21,7 +21,7 @@
                 Description
               </th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Type
+                Status
               </th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Mulct
@@ -53,10 +53,16 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm text-gray-900">{{ activity.description }}</div>
+                <div class="text-sm text-gray-500">{{ activity.type }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                  {{ activity.type }}
+                <span v-if="activity.status" class="px-2 select-none inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer bg-green-100 text-green-800"
+                      @dblclick="toggleStatus(activity.id, false)">
+                  Active
+                </span>
+                <span v-else class="px-2 select-none inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer bg-red-100 text-red-800"
+                      @dblclick="toggleStatus(activity.id, true)">
+                  Disabled
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -157,6 +163,7 @@
 
 <script>
 import {db} from '../firebase'
+import moment from "moment";
 
 export default {
   name: 'ActivityManager',
@@ -173,14 +180,11 @@ export default {
       })
     },
     createActivity() {
-      db.collection("activities").add({...this.form.fields, createdAt: new Date()})
-          .then((docRef) => {
-            console.log("Document written with ID: ", docRef.id);
+      db.collection("activities").add({...this.form.fields, createdAt: new Date(), status: true})
+          .then( _ => {
             this.form.visibility = false
           })
-          .catch((error) => {
-            console.error("Error adding document: ", error);
-          });
+          .catch((error) => console.error("Error adding document: ", error));
     },
     editActivity(activityId, index) {
       this.resetForm()
@@ -204,7 +208,7 @@ export default {
     updateActivity(activityId) {
       db.collection('activities')
           .doc(activityId)
-          .update(this.form.fields)
+          .update({...this.form.fields, updatedAt: new Date})
           .then(() => this.form.visibility = false)
           .catch()
     },
@@ -222,12 +226,26 @@ export default {
         title: 'Create new activity',
       }
     },
+    async toggleStatus(activityId, status){
+      if (status) return this.toggleActivity(activityId, status)
+      let userActivities = (await db.collection('user_activity').where('activityId', '==', activityId).get()).docs
+      for (let activity of userActivities) {
+        let lastCheck = moment(activity.data().lastCheck.toDate()).startOf('day')
+        let now = moment().startOf('day')
+        if (lastCheck.diff(now, 'day') !== 0) return alert('Please run missed Activities, and try again')
+      }
+      return this.toggleActivity(activityId, status)
+    },
+    toggleActivity(activityId, status) {
+      db.collection('activities')
+          .doc(activityId)
+          .update({status})
+    }
   },
   created() {
     db.collection('activities').onSnapshot((querySnapshot) => {
       this.activities = [];
       querySnapshot.forEach((doc) => {
-        console.log(doc.data())
         this.activities.unshift({id: doc.id, ...doc.data()});
       });
     });

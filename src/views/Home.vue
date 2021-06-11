@@ -111,7 +111,7 @@ export default {
   }),
   methods: {
     markAsPending(activityId, index) {
-      if (confirm('Are you sure you didn\'t completed the activity yet?')) {
+      if (confirm('Are you sure you didn\'t complete the activity yet?')) {
         db.collection(this.ca)
             .doc(this.completedActivity(activityId))
             .delete()
@@ -130,7 +130,7 @@ export default {
   },
   computed: {
     status() {
-      return this.ratio * 100 || 0;
+      return Math.round(this.ratio * 100) || 0;
     },
     ratio() {
       return this.activities.filter((activity) => activity.completed).length / this.activities.length
@@ -143,6 +143,7 @@ export default {
           querySnapshot.forEach((doc) => {
             db.collection('activities').doc(doc.data().activityId)
                 .onSnapshot(async (activity) => {
+                  if (!activity.data().status) return false
                   let doneActivity = await db.collection(this.ca)
                       .doc(this.completedActivity(activity.id))
                       .get()
