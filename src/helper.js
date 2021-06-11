@@ -18,9 +18,9 @@ export async function checkUserActivities(user, log) {
     for (const userActivity of userActivities.docs) {
         let activity = await db.collection('activities').doc(userActivity.data().activityId).get();
 
-        if (activity.data().type === 'daily') {
+        if (activity.data().type === 'daily' && activity.data().status) {
             let lastCheck = moment(userActivity.data().lastCheck.toDate()).startOf('day')
-            let now = moment().startOf('day');
+            let now = moment().startOf('day')
             log(`checking for Activity (${activity.data().title})`)
             // if lastCheck - now is more than a day
             while (lastCheck.diff(now, 'day')) {

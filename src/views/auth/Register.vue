@@ -84,6 +84,7 @@ export default {
   }),
   methods: {
     signUp() {
+      this.form.errors = []
       if (this.form.fields.password !== this.form.fields.passwordConfirmation)
         return this.form.errors.push('passwordConfirmation must be the same as password');
 
