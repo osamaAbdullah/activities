@@ -90,11 +90,12 @@ export default {
 
       auth.createUserWithEmailAndPassword(this.form.fields.email, this.form.fields.password)
           .then((userCredential) => {
-            db.collection("users")
+            db.collection('users')
                 .doc(userCredential.user.uid)
                 .set({
                   name: this.form.fields.name,
                   role: 'user',
+                  status: 'pending',
                   email: this.form.fields.email,
                 });
           })

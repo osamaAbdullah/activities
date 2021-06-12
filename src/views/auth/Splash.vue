@@ -9,7 +9,9 @@ export default {
   watch:{
     user(user) {
       if (user.authenticated === true) {
-        this.$router.replace(this.$store.state.initRoute === '/checking' ? '/' : this.$store.state.initRoute)
+        if (user.status === 'active') return this.$router.replace(['/checking', '/pending', '/blocked', '/402'].includes(this.$store.state.initRoute) ? '/' : this.$store.state.initRoute)
+        else if (user.status === 'pending') return this.$router.replace('/pending')
+        else if (user.status === 'blocked') return this.$router.replace('/blocked')
       }
     }
   },

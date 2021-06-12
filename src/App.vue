@@ -1,9 +1,9 @@
 <template>
-  <navigation v-if="user && user.authenticated"/>
+  <navigation v-if="user && user.authenticated && user.status === 'active'"/>
   <router-view/>
 </template>
 <script>
-import {auth} from "./firebase";
+
 import navigation from "./components/nav.vue";
 
 export default {
