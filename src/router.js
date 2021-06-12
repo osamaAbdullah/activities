@@ -38,12 +38,6 @@ const routes = [
         component: () => import('./views/tasks/DailyMissedActivities.vue'),
         meta: {auth: true},
     },
-    // {
-    //     path: '/tasks/daily/my-missed-activities',
-    //     name: 'MyDailyMissedActivities',
-    //     component: () => import('./views/tasks/MyDailyMissedActivities.vue'),
-    //     meta: {auth: true},
-    // },
     {
         path: '/login',
         name: 'Login',
@@ -53,6 +47,16 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: () => import('./views/auth/Register.vue'),
+    },
+    {
+        path: '/pending',
+        name: 'Pending',
+        component: () => import('./views/errors/pending.vue'),
+    },
+    {
+        path: '/blocked',
+        name: 'Blocked',
+        component: () => import('./views/errors/blocked.vue'),
     },
     {
         path: '/402',
@@ -80,6 +84,7 @@ auth.onAuthStateChanged((user) => {
                     uid: user.uid,
                     role: USER.role,
                     name: USER.name,
+                    status: USER.status,
                 })
                 router.push({name: 'Home'})
             })

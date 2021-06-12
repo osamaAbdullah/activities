@@ -18,6 +18,9 @@
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Role
               </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Status
+              </th>
               <th scope="col" class="relative px-6 py-3">
                 <span class="sr-only">Transactions</span>
               </th>
@@ -45,6 +48,14 @@
                         class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                   <option value="admin">Admin</option>
                   <option value="user">User</option>
+                </select>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <select v-model="users[index].status" @change="changeStatus(users[index].status, index)"
+                        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                  <option value="active">Active</option>
+                  <option value="blocked">Blocked</option>
+                  <option value="pending">Pending</option>
                 </select>
               </td>
               <td class="px-6 font-medium">
@@ -413,6 +424,9 @@ export default {
     },
     changeRole(role, index) {
       db.collection('users').doc(this.users[index].id).update({role}).then().catch()
+    },
+    changeStatus(status, index) {
+      db.collection('users').doc(this.users[index].id).update({status}).then().catch()
     },
     seeTransactions(index) {
       this.transaction = {visibility: true, userId: this.users[index].id, index}
