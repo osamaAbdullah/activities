@@ -104,10 +104,10 @@ export default {
           });
     },
   },
-  created() {
-    if (this.$store.getters.user.authenticated) {
-      this.$router.replace({name: 'Home'})
-    }
-  }
+  // created() {
+  //   if (this.$store.getters.user.authenticated) {
+  //     this.$router.replace({name: 'Home'})
+  //   }
+  // }
 }
 </script>

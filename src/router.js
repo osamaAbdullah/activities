@@ -86,22 +86,27 @@ auth.onAuthStateChanged((user) => {
                     name: USER.name,
                     status: USER.status,
                 })
-                router.push({name: USER.status === 'active' ? 'Home' : 'Pending'})
+                router.push({name: 'Home'})
             })
     }
 })
 
 router.beforeEach((to, from, next) => {
-    console.log(to.fullPath, 'route changed')
+
+    const user = store.getters.user
+
+    if (['/pending', '/blocked', '/402'].includes(to.fullPath)) return next()
+
+    if (user.status === 'pending') return next({name: 'Pending'})
+    else if (user.status === 'blocked') return next({name: 'Blocked'})
+
     //only admin should see this page
-    if (to.matched.some(record => record.meta.role === 'admin')) {
-        store.getters.user.role === 'admin' ? next() : next({name: 'Unauthorized'})
-        // must be authenticated to see this page
-    } else if (to.matched.some(record => record.meta.auth)) {
-        store.getters.user.authenticated ? next() : next({name: 'Login'})
-    } else {
-        next()
-    }
+    if (to.matched.some(record => record.meta.role === 'admin')) return user.role === 'admin' ? next() : next({name: 'Unauthorized'})
+
+    // must be authenticated to see this page
+    else if (to.matched.some(record => record.meta.auth)) return user.authenticated ? next() : next({name: 'Login'})
+
+    return next()
 });
 
 export default router

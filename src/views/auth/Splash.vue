@@ -6,12 +6,14 @@
 <script>
 
 export default {
-  watch:{
+  watch: {
     user(user) {
       if (user.authenticated === true) {
-        if (user.status === 'active') return this.$router.replace(['/checking', '/pending', '/blocked', '/402'].includes(this.$store.state.initRoute) ? '/' : this.$store.state.initRoute)
-        else if (user.status === 'pending') return this.$router.replace('/pending')
-        else if (user.status === 'blocked') return this.$router.replace('/blocked')
+        this.$router.replace(
+            ['/checking', '/pending', '/blocked', '/402', '/login', '/register'].includes(this.$store.state.initRoute) ?
+                '/' :
+                this.$store.state.initRoute
+        )
       }
     }
   },
@@ -31,12 +33,20 @@ export default {
 }
 
 @-webkit-keyframes spinner {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spinner {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

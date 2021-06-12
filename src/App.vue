@@ -1,5 +1,5 @@
 <template>
-  <navigation v-if="user && user.authenticated && user.status === 'active'"/>
+  <navigation v-if="user && user.authenticated"/>
   <router-view/>
 </template>
 <script>
