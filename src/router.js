@@ -86,7 +86,7 @@ auth.onAuthStateChanged((user) => {
                     name: USER.name,
                     status: USER.status,
                 })
-                router.push({name: 'Home'})
+                router.push({name: USER.status === 'active' ? 'Home' : 'Pending'})
             })
     }
 })
