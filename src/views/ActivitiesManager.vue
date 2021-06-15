@@ -227,13 +227,20 @@ export default {
       }
     },
     async toggleStatus(activityId, status){
-      if (status) return this.toggleActivity(activityId, status)
+
       let userActivities = (await db.collection('user_activity').where('activityId', '==', activityId).get()).docs
+
+      if (status) {
+        await userActivities.forEach(userActivity => db.doc('user_activity/'+userActivity.id).update({lastCheck: new Date()}))
+        return this.toggleActivity(activityId, status)
+      }
+
       for (let activity of userActivities) {
         let lastCheck = moment(activity.data().lastCheck.toDate()).startOf('day')
         let now = moment().startOf('day')
         if (lastCheck.diff(now, 'day') !== 0) return alert('Please run missed Activities, and try again')
       }
+
       return this.toggleActivity(activityId, status)
     },
     toggleActivity(activityId, status) {
