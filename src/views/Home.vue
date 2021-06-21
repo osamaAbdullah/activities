@@ -140,6 +140,7 @@ export default {
     db.collection('user_activity')
         .where('userId', '==', this.$store.getters.user.uid)
         .onSnapshot((querySnapshot) => {
+          this.activities = []
           querySnapshot.forEach((doc) => {
             db.collection('activities').doc(doc.data().activityId)
                 .onSnapshot(async (activity) => {

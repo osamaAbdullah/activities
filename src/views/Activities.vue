@@ -113,6 +113,7 @@ export default {
   },
   created() {
     db.collection("activities").onSnapshot((querySnapshot) => {
+      this.activities = []
       querySnapshot.forEach(async (doc) => {
         let myActivity = await db.collection('user_activity').doc(this.$store.getters.user.uid + '_' + doc.id).get();
         if (myActivity.data() === undefined) {
