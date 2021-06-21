@@ -137,6 +137,14 @@ export default {
     }
   },
   mounted() {
+
+
+       Notification.requestPermission().then(_ => {
+         new Notification('psama', {body: 'ffdfd'})
+         console.log(Notification.permission)
+       })
+
+
     db.collection('user_activity')
         .where('userId', '==', this.$store.getters.user.uid)
         .onSnapshot((querySnapshot) => {
