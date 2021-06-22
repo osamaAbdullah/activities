@@ -35,14 +35,13 @@ messaging
 
 
 messaging.onMessage( (payload) => {
-    console.log(payload);
-    const notificationOption = {
-        body: payload.notification.body,
-        icon: payload.notification.icon
-    };
+    console.log('onMessage');
 
     if (Notification.permission === 'granted') {
-        var notification = new Notification(payload.notification.title, notificationOption);
+        let notification = new Notification(payload.notification.title, {
+            body: payload.notification.body,
+            icon: payload.notification.icon
+        });
 
         notification.onclick = function (ev) {
             ev.preventDefault();
@@ -50,5 +49,4 @@ messaging.onMessage( (payload) => {
             notification.close();
         }
     }
-
 })
