@@ -34,14 +34,14 @@ messaging
 });
 
 
-messaging.onMessage(function (payload) {
+messaging.onMessage( (payload) => {
     console.log(payload);
     const notificationOption = {
         body: payload.notification.body,
         icon: payload.notification.icon
     };
 
-    if (Notification.permission === "granted") {
+    if (Notification.permission === 'granted') {
         var notification = new Notification(payload.notification.title, notificationOption);
 
         notification.onclick = function (ev) {
@@ -52,18 +52,3 @@ messaging.onMessage(function (payload) {
     }
 
 })
-
-// messaging.onTokenRefresh(function () {
-//     messaging.getToken()
-//         .then(function (newtoken) {
-//             console.log("New Token : "+ newtoken);
-//         })
-//         .catch(function (reason) {
-//             console.log(reason);
-//         })
-// })
-
-// IntitalizeFireBaseMessaging();
-
-
-
