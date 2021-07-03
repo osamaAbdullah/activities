@@ -10,6 +10,12 @@ const routes = [
         meta: {auth: true},
     },
     {
+        path: '/settings',
+        name: 'Settings',
+        component: () => import('./views/Settings.vue'),
+        meta: {auth: true},
+    },
+    {
         path: '/checking',
         name: 'Splash',
         component: () => import('./views/auth/Splash.vue'),
