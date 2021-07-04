@@ -111,9 +111,11 @@ export default {
   created() {
 
     if (Notification.permission === 'granted') {
+      console.log('granted')
       this.initFCM()
     }
     else if (Notification.permission === 'default') {
+      console.log('default')
       this.errorMsg = 'Allow notifications please'
       Notification.requestPermission(this.requestPermissionCallback)
       // try {
@@ -129,6 +131,7 @@ export default {
       //   }
       // }
     } else if (Notification.permission === 'denied') {
+      console.log('denied')
       return this.errorMsg = 'You blocked notifications!  Try to allow them in browser setting'
     }
   },
