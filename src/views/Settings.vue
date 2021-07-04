@@ -19,7 +19,6 @@
         </button>
       </div>
     </div>
-    <button @click="foo"></button>
   </div>
 </template>
 
@@ -37,9 +36,6 @@ export default {
     errorMsg: false
   }),
   methods: {
-    foo() {
-      console.log('foo')
-    },
     async checkToken() {
       let token = await db.collection('notification_tokens').doc(this.token).get()
       this.isTokenRegistered = token.exists;
@@ -64,46 +60,40 @@ export default {
           .then(_ => this.isTokenRegistered = false)
     },
     initFCM() {
-      if (firebase.messaging.isSupported()) {
-
-        const messaging = firebase.messaging();
-
-        messaging
-            .getToken(vapidKey)
-            .then((currentToken) => {
-              if (currentToken) {
-                this.token = currentToken
-                this.checkToken()
-              }
-            }).catch((err) => {
-          console.log('An error occurred while retrieving token. ', err);
-          // ...
-        });
+      const messaging = firebase.messaging();
+      messaging
+          .getToken(vapidKey)
+          .then((currentToken) => {
+            if (currentToken) {
+              this.token = currentToken
+              this.checkToken()
+            }
+          }).catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+        // ...
+      });
 
 
-        // messaging.onMessage((payload) => {
-        //   console.log('onMessage');
-        //
-        //   if (Notification.permission === 'granted') {
-        //     let notification = new Notification(payload.notification.title, {
-        //       body: payload.notification.body,
-        //       icon: payload.notification.icon
-        //     });
-        //
-        //     notification.onclick = function (ev) {
-        //       ev.preventDefault();
-        //       window.open(payload.notification.click_action, '_blank');
-        //       notification.close();
-        //     }
-        //   }
-        // })
+      // messaging.onMessage((payload) => {
+      //   console.log('onMessage');
+      //
+      //   if (Notification.permission === 'granted') {
+      //     let notification = new Notification(payload.notification.title, {
+      //       body: payload.notification.body,
+      //       icon: payload.notification.icon
+      //     });
+      //
+      //     notification.onclick = function (ev) {
+      //       ev.preventDefault();
+      //       window.open(payload.notification.click_action, '_blank');
+      //       notification.close();
+      //     }
+      //   }
+      // })
 
-      } else {
-        this.errorMsg = 'Notification not supported by your device'
-      }
+
     },
     requestPermissionCallback(permission) {
-      console.log(permission)
       if (permission === 'granted') {
         this.errorMsg = false
         this.initFCM()
@@ -113,33 +103,32 @@ export default {
     }
   },
   created() {
-    console.log('created')
-    if (Notification.permission === 'granted') {
-      console.log('granted')
-      alert('granted')
-      this.initFCM()
+    if (firebase.messaging.isSupported()) {
+      if (Notification.permission === 'granted') {
+        this.initFCM()
+      }
+      else if (Notification.permission === 'default') {
+        this.errorMsg = 'Allow notifications please'
+        Notification.requestPermission(this.requestPermissionCallback)
+        // try {
+        //   Notification.requestPermission().then(this.requestPermissionCallback)
+        // } catch (error) {
+        //   // Safari doesn't return a promise for requestPermissions and it
+        //   // throws a TypeError. It takes a callback as the first argument
+        //   // instead.
+        //   if (error instanceof TypeError) {
+        //     Notification.requestPermission(this.requestPermissionCallback);
+        //   } else {
+        //     throw error;
+        //   }
+        // }
+      }
+      else if (Notification.permission === 'denied') {
+        return this.errorMsg = 'You blocked notifications!  Try to allow them in browser setting'
+      }
     }
-    else if (Notification.permission === 'default') {
-      console.log('default')
-      alert('default')
-      this.errorMsg = 'Allow notifications please'
-      Notification.requestPermission(this.requestPermissionCallback)
-      // try {
-      //   Notification.requestPermission().then(this.requestPermissionCallback)
-      // } catch (error) {
-      //   // Safari doesn't return a promise for requestPermissions and it
-      //   // throws a TypeError. It takes a callback as the first argument
-      //   // instead.
-      //   if (error instanceof TypeError) {
-      //     Notification.requestPermission(this.requestPermissionCallback);
-      //   } else {
-      //     throw error;
-      //   }
-      // }
-    } else if (Notification.permission === 'denied') {
-      console.log('denied')
-      alert('denied')
-      return this.errorMsg = 'You blocked notifications!  Try to allow them in browser setting'
+    else {
+      this.errorMsg = 'Notification not supported by your device'
     }
   },
 }
