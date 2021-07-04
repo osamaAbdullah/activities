@@ -19,6 +19,7 @@
         </button>
       </div>
     </div>
+    <button @click="foo"></button>
   </div>
 </template>
 
@@ -36,6 +37,9 @@ export default {
     errorMsg: false
   }),
   methods: {
+    foo() {
+      console.log('foo')
+    },
     async checkToken() {
       let token = await db.collection('notification_tokens').doc(this.token).get()
       this.isTokenRegistered = token.exists;
@@ -109,7 +113,7 @@ export default {
     }
   },
   created() {
-
+    console.log('created')
     if (Notification.permission === 'granted') {
       console.log('granted')
       alert('granted')
