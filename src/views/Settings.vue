@@ -1,6 +1,6 @@
 <template>
   <div
-      class="flex flex-col justify-center w-2/6 mx-auto shadow overflow-hidden border-b border-gray-200 sm:rounded-lg my-6">
+      class="flex flex-col justify-center w-2/6 c-sm-w-full mx-auto shadow overflow-hidden border-b border-gray-200 sm:rounded-lg my-6">
     <div class="text-2xl px-10 py-10 text-center">Notifications</div>
     <div v-if="errorMsg" v-text="errorMsg" class="text-center p-3 bg-red-300"></div>
     <div v-else>
@@ -50,6 +50,8 @@ export default {
             userAgent: navigator.userAgent
           })
           .then(_ => this.isTokenRegistered = true)
+      .catch(err => console.log(err))
+      console.log('enabling button pressed')
     },
     disableNotifications() {
       db.collection('notification_tokens')
@@ -132,3 +134,12 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+@media screen and (max-width: 1024px) {
+  .c-sm-w-full {
+    width: 95%;
+  }
+}
+
+</style>
