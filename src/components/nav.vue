@@ -22,7 +22,6 @@
 <!--              <router-link to="/tasks/daily/my-missed-activities" :class="navLink('/tasks/daily/my-missed-activities')">My Daily missed activities</router-link>-->
               <router-link to="/users" :class="navLink('/users')">Users</router-link>
               <router-link to="/activities-manager" :class="navLink('/activities-manager')">Activity Manager</router-link>
-              <router-link to="/tasks/daily/missed-activities" :class="navLink('/tasks/daily/missed-activities')">Daily missed activities</router-link>
             </div>
           </div>
         </div>
@@ -68,7 +67,6 @@
 <!--        <router-link to="/tasks/daily/my-missed-activities" :class="navLink('/tasks/daily/my-missed-activities')">My Daily missed activities</router-link>-->
         <router-link to="/users" :class="navLink('/users')">Users</router-link>
         <router-link to="/activities-manager" :class="navLink('/activities-manager')">Activity Manager</router-link>
-        <router-link to="/tasks/daily/missed-activities" :class="navLink('/tasks/daily/missed-activities')">Daily missed activities</router-link>
       </div>
     </div>
   </nav>
