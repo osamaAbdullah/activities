@@ -230,11 +230,13 @@ export default {
 
       let userActivities = (await db.collection('user_activity').where('activityId', '==', activityId).get()).docs
 
+      // Enabling
       if (status) {
         await userActivities.forEach(userActivity => db.doc('user_activity/'+userActivity.id).update({lastCheck: new Date()}))
         return this.toggleActivity(activityId, status)
       }
 
+      // Disabling
       for (let activity of userActivities) {
         let lastCheck = moment(activity.data().lastCheck.toDate()).startOf('day')
         let now = moment().startOf('day')

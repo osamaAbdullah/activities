@@ -14,7 +14,7 @@ export default {
     }
   },
   created() {
-    this.$store.state.initRoute = window.history.state.current;
+    this.$store.state.initRoute = window.location.pathname;
     this.$router.push({name: 'Splash'});
   },
 }

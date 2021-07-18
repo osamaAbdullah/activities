@@ -1,3 +1,4 @@
+export const vapidKey = {vapidKey: 'BPp5_WTCzMGJxUJxVcijw-XfKsA5FhZ8_hipanqFQH-iK3RqiBzUsVD-oQEGdeOrXrN1225cPfySWVS0HMcLwrk'}
 
 export
 
@@ -9,6 +10,7 @@ const firebaseConfig = {
     messagingSenderId: "545284794512",
     appId: "1:545284794512:web:ffef95f1067025f7861015"
 };
+
 
 // const firebaseConfig = {
 //     apiKey: "AIzaSyB0NKEO-ZujRilEygjxRrduzhlmz_FuI0A",
