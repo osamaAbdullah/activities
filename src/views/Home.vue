@@ -115,14 +115,14 @@ export default {
         db.collection(this.ca)
             .doc(this.completedActivity(activityId))
             .delete()
-        this.activities[index].completed = false;
+            .then(_ => this.activities[index].completed = false)
       }
     },
     markAsCompleted(activityId, index) {
       db.collection(this.ca)
           .doc(this.completedActivity(activityId))
           .set({activityId: activityId, userId: this.$store.getters.user.uid, dateTime: new Date()})
-      this.activities[index].completed = true;
+          .then(_ => this.activities[index].completed = true)
     },
     completedActivity(activityId) {
       return `${activityId}__${this.$store.getters.user.uid}__${moment().format('YYYY_MM_DD')}`;
