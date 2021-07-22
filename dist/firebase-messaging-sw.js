@@ -19,6 +19,7 @@ firebase.initializeApp({
 // Retrieve an instance of Firebase Messaging so that it can handle background
 // messages.
 
+
 if (firebase.messaging.isSupported()) {
     const messaging = !firebase.apps.length
         ? firebase.initializeApp(firebaseConfig).messaging()
