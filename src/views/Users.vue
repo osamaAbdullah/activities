@@ -89,14 +89,14 @@
       <div
           class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full">
         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <div class="sm:flex sm:items-start">
+          <div>
             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
               <div class="flex justify-between">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
                   {{ users[transaction.index].name }}'s Transactions
                 </h3>
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
-                  {{ balance }}$
+                  {{ balance }}
                 </h3>
                 <button @click="resetForm"
                         class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -206,7 +206,7 @@
       <div
           class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-2/3">
         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <div class="sm:flex sm:items-start justify-center">
+          <div>
             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
               <div class="flex justify-between">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
@@ -293,7 +293,7 @@
       <div
           class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <div class="sm:flex sm:items-start">
+          <div>
             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
               <h3 class="text-lg leading-6 font-medium text-gray-900">
                 {{ form.title }}
@@ -302,7 +302,7 @@
 
 
                 <div class="mt-10 sm:mt-0">
-                  <div class="md:grid md:grid-cols-3 md:gap-6">
+                  <div>
                     <div class="mt-5 md:mt-0 md:col-span-2">
                       <form
                           @submit.prevent="form.mode === 'create' ? createTransactions(transaction.userId) : updateTransaction()">
@@ -356,7 +356,7 @@
       <div
           class="inline-block align-bottom bg-white rounded-lg text-left bg-green-500 shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:2/3">
         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <div class="sm:flex sm:items-center">
+          <div>
             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
               <h3 class="text-lg leading-6 font-medium text-gray-900">
                 missed Days for "{{ missedActivity.activityTitle }}"
@@ -430,7 +430,10 @@ export default {
     },
     seeTransactions(index) {
       this.transaction = {visibility: true, userId: this.users[index].id, index}
-      db.collection('transactions').where('userId', '==', this.users[index].id).onSnapshot((querySnapshot) => {
+      db.collection('transactions')
+          .where('userId', '==', this.users[index].id)
+          .orderBy('createdAt')
+          .onSnapshot((querySnapshot) => {
         this.transactions = [];
         querySnapshot.forEach((doc) => {
           this.transactions.unshift({id: doc.id, ...doc.data(), user: this.users[index]});
