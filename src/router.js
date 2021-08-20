@@ -4,6 +4,12 @@ import {store} from "./vuex";
 
 const routes = [
     {
+        path: '/admin-panel',
+        name: 'Dashboard',
+        component: () => import('./views/Dashboard.vue'),
+        meta: {auth: true, role: 'admin'},
+    },
+    {
         path: '/',
         name: 'Home',
         component: () => import('./views/Home.vue'),

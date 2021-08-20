@@ -67,21 +67,37 @@
             <!-- More people... -->
             </tbody>
           </table>
-          <div id="cards" class="flex flex-col items-center">
-            <div v-for="(activity, index) in activities" :key="activity.id"
-                 @click="activity.completed ? markAsPending(activity.id, index) : markAsCompleted(activity.id, index)"
-                 :class="`rounded-3xl flex flex-col justify-center items-center p-5 my-3 ${activity.completed ? 'bg-green-200' : 'bg-red-200'}`">
-              <div v-text="activity.title" class="text-2xl text-white text-center p-1"></div>
-              <div v-text="activity.mulct" class="text-white text-center p-1"></div>
-              <div v-if="activity.completed" class="py-2 px-3">
-                <div class="p-2 w-full bg-green-300 text-sm text-center text-green-500 rounded-full">Completed</div>
-                <div class="italic p-2 text-blue-500">click to unComplete</div>
+          <div id="cards" class="flex flex-col items-center select-none">
+            <template v-for="(activity, index) in activities" :key="activity.id">
+              <div v-if="activity.loading" class="rounded-3xl flex flex-col justify-center items-center p-5 my-3 bg-gray-200 w-1/2">
+                <div v-text="activity.title" class="text-2xl text-gray-400 text-center p-1"></div>
+                <div v-text="activity.mulct" class="text-gray-400 text-center p-1"></div>
+                <div >
+                  <div class="py-2 px-4 w-full bg-gray-300 text-sm text-center text-gray-400 rounded-full">Processing...</div>
+                  <div class="italic p-2 text-gray-400 text-xs text-center">Please wait...</div>
+                </div>
               </div>
-              <div v-else class="py-2 px-3">
-                <div class="p-2 w-full bg-red-300 text-sm text-center text-red-500 rounded-full">Pending</div>
-                <div class="italic p-2 text-blue-500">click to Complete</div>
-              </div>
-            </div>
+              <template v-else>
+                <div v-if="activity.completed" @click="markAsPending(activity.id, index)"
+                     class="rounded-3xl flex flex-col justify-center items-center p-5 my-3 bg-green-200 w-1/2">
+                  <div v-text="activity.title" class="text-2xl text-green-700 text-center p-1"></div>
+                  <div v-text="activity.mulct" class="text-green-700 text-center p-1"></div>
+                  <div >
+                    <div class="p-2 w-full bg-green-300 text-sm text-center text-green-600 rounded-full">Completed</div>
+                    <div class="italic p-2 text-green-500 text-xs text-center">click to toggle</div>
+                  </div>
+                </div>
+                <div v-else @click="markAsCompleted(activity.id, index)"
+                     class="rounded-3xl flex flex-col justify-center items-center p-5 my-3 bg-red-200 w-1/2">
+                  <div v-text="activity.title" class="text-2xl text-red-700 text-center p-1"></div>
+                  <div v-text="activity.mulct" class="text-red-700 text-center p-1"></div>
+                  <div >
+                    <div class="p-2 w-full bg-red-300 text-sm text-center text-red-600 rounded-full">Pending</div>
+                    <div class="italic p-2 text-red-500 text-xs text-center">click to toggle</div>
+                  </div>
+                </div>
+              </template>
+            </template>
           </div>
         </div>
       </div>
@@ -112,17 +128,25 @@ export default {
   methods: {
     markAsPending(activityId, index) {
       if (confirm('Are you sure you didn\'t complete the activity yet?')) {
+        this.activities[index].loading = true
         db.collection(this.ca)
             .doc(this.completedActivity(activityId))
             .delete()
-            .then(_ => this.activities[index].completed = false)
+            .then(_ => {
+              this.activities[index].completed = false
+              this.activities[index].loading = false
+            })
       }
     },
     markAsCompleted(activityId, index) {
+      this.activities[index].loading = true
       db.collection(this.ca)
           .doc(this.completedActivity(activityId))
           .set({activityId: activityId, userId: this.$store.getters.user.uid, dateTime: new Date()})
-          .then(_ => this.activities[index].completed = true)
+          .then(_ => {
+            this.activities[index].loading = false
+            this.activities[index].completed = true
+          })
     },
     completedActivity(activityId) {
       return `${activityId}__${this.$store.getters.user.uid}__${moment().format('YYYY_MM_DD')}`;
@@ -151,6 +175,7 @@ export default {
                   this.activities.unshift({
                     id: activity.id,
                     completed: doneActivity.data() !== undefined,
+                    loading: false,
                     ...activity.data(),
                   });
 
