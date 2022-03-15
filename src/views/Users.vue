@@ -347,7 +347,8 @@
       </div>
     </div>
   </div>
-  <div v-if="missedActivity.visibility" class="fixed z-30 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+  <div v-if="missedActivity.visibility" class="fixed z-30 inset-0 overflow-y-auto" aria-labelledby="modal-title"
+       role="dialog"
        aria-modal="true">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
       <div @click="missedActivity.visibility = false" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
@@ -426,7 +427,16 @@ export default {
       db.collection('users').doc(this.users[index].id).update({role}).then().catch()
     },
     changeStatus(status, index) {
-      db.collection('users').doc(this.users[index].id).update({status}).then().catch()
+      if (confirm('Changing user Status will kick out the user from all joined activities, are you sure?')) {
+        db.collection('user_activity')
+            .where('userId', '==', this.users[index].id)
+            .get()
+            .then(userActivities => userActivities.docs)
+            .then(userActivities => userActivities.forEach(userActivity => db.doc(`user_activity/${userActivity.id}`).delete().then().catch()));
+
+        db.collection('users').doc(this.users[index].id).update({status}).then().catch()
+
+      }
     },
     seeTransactions(index) {
       this.transaction = {visibility: true, userId: this.users[index].id, index}
@@ -434,11 +444,11 @@ export default {
           .where('userId', '==', this.users[index].id)
           .orderBy('createdAt')
           .onSnapshot((querySnapshot) => {
-        this.transactions = [];
-        querySnapshot.forEach((doc) => {
-          this.transactions.unshift({id: doc.id, ...doc.data(), user: this.users[index]});
-        });
-      });
+            this.transactions = [];
+            querySnapshot.forEach((doc) => {
+              this.transactions.unshift({id: doc.id, ...doc.data(), user: this.users[index]});
+            });
+          });
     },
     seeActivities(index) {
       this.activity = {visibility: true, userId: this.users[index].id, index}
